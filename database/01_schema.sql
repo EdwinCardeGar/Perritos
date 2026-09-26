@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS perritos (
 
     descripcion TEXT NULL,
 
-    id_color_principal INT UNSIGNED NOT NULL,
+    color_principal INT UNSIGNED NOT NULL,
 
     latitud DECIMAL(10,8) NOT NULL,
     longitud DECIMAL(11,8) NOT NULL,
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS perritos (
         FOREIGN KEY (id_raza)
         REFERENCES razas(id_raza),
 
-    CONSTRAINT fk_perritos_color_principal
-        FOREIGN KEY (id_color_principal)
+    CONSTRAINT fk_perritos_color_principal 
+        FOREIGN KEY (color_principal) 
         REFERENCES colores(id_color),
 
     CONSTRAINT chk_perritos_nombre

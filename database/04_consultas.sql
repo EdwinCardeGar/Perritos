@@ -21,7 +21,7 @@ LEFT JOIN razas r
     ON p.id_raza = r.id_raza
 
 JOIN colores cp
-    ON p.id_color_principal = cp.id_color
+    ON p.color_principal = cp.id_color
 
 LEFT JOIN perrito_colores pc
     ON p.id_perrito = pc.id_perrito
@@ -48,7 +48,7 @@ SELECT
     COUNT(p.id_perrito) AS total_perritos
 FROM colores c
 LEFT JOIN perritos p
-    ON c.id_color = p.id_color_principal
+    ON c.id_color = p.color_principal
 GROUP BY c.id_color, c.nombre
 ORDER BY total_perritos DESC;
 
