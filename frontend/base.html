@@ -67,9 +67,29 @@
 <!-- UBI-->>
                     <button type="button" onclick="obtenerUbicacion()">Ubicacion de Perrito</button>
                     <p id="ubicacion"></p><br>
+<!--TERMINAR FORMULARIO-->
                     <button type="submit">Enviar perrito</button>
-                    </form>
+                </form>
+<!--Funcion para acceder al navegador *OJO, solo accede a tu ubicacion actual, necesario que podamos usar un pin-->    
+                <script>
+    function obtenerUbicacion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                document.getElementById("ubicacion").innerText =
+                    "Latitud: " + lat + ", Longitud: " + lon;
 
+                // Abrir en Google Maps (funciona en móviles y PC)
+                window.open(`https://www.google.com/maps?q=${lat},${lon}`);
+            }, function(error) {
+                alert("No se pudo obtener la ubicación: " + error.message);
+            });
+        } else {
+            alert("La geolocalización no está soportada en este navegador.");
+        }
+    }
+    </script>
                 </form>
         </main>
     </body>
