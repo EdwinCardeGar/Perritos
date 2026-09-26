@@ -1,0 +1,76 @@
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ayuda a Perritos</title>
+    </head>
+    <body>
+        <header>
+            <h1>AYUDA A PERRITOS CERCA DE TI</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">Registrar perritos </a></li>
+                <li><a href="#">Cerca de ti</a></li>
+                <li><a href="#">¿Cómo funciona?</a></li>
+                <li><a href="#">Acerca de nosotros</a></li>
+            </ul>
+        </nav>
+        <main> 
+            <section>
+                <h2>REGISTRAR PERRITOS CERCA DE TI</h2>
+                <form action="#" method="post">
+<!-- FOTO-->>
+                    <label for="foto">Subir foto</label>
+                    <input type="file" id="foto" name="foto" accept="image/*" capture="environment"><br><br>
+<!-- NOMBRE-->>
+                    <label for= "nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre">
+ <!-- RAZA-->>
+                    <label for= "raza">Raza</label>
+                    <select id="raza" name="raza">
+                        <option value="">Seleccione color de perrito</option>
+                        <option value="Pastor Aleman">Pastor aleman</option>
+                        <option value="Chihuahua">Chihuahua</option>
+                        <option value="Labrador">Labrador</option>
+                        <option value="Schnauzer">Schnauzer</option>
+                        <option value="Husky">Husky</option>
+                        <option value="Pug">Pug</option>
+                        <option value="Bulldog">Bulldog</option>
+                        <option value="Mestizo">Mestizo</option>
+                    </select><br><br>
+<!-- COLOR-->>
+                    <label for= "color">Color</label>
+                    <select id="color" name="color">
+                        <option value="">Color principal</option>
+                        <option value="Negro">Negro</option>
+                        <option value="Blanco">Blanco</option>
+                        <option value="Marrón">Marrón</option>
+                        <option value="Amarillo">Amarillo</option>
+                        <option value="Gris">Gris</option>
+                        <option value="Crema">Crema</option>
+                    </select><br><br>
+<!-- COLORES SECUNDARIOS-->>
+                    <label for= "color adicional">Color adicional</label>
+                    <select id="color adicional" name="color secundario ">
+                        <option value="">Seleccionar Color adicional</option>
+                        <option value="no tiene">Sin color adicional</option>
+                        <option value="negro">Negro</option>
+                        <option value="Blanco">Blanco</option>
+                        <option value="Marron">Marrón</option>
+                        <option value="Amarillo">Amarillo</option>
+                        <option value="Gris">Gris</option>
+                        <option value="Crema">Crema</option>
+                    </select><br><br>
+<!-- FECHA-->>
+                    <label for= "fecha">Fecha de registro</label>
+                    <input type="date" id="fecha registro" name="fecha registro">
+<!-- UBI-->>
+                    <button type="button" onclick="obtenerUbicacion()">Ubicacion de Perrito</button>
+                    <p id="ubicacion"></p><br>
+                    <button type="submit">Enviar perrito</button>
+                    </form>
+
+                </form>
+        </main>
+    </body>
+</html>
