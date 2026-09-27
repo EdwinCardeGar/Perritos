@@ -32,7 +32,7 @@ if (coloresAdicionales.length>2){
 //fecha, se agrega la de sysdate
 let fechaRegistro = new Date().toISOString();
 console.log("Fecha de registro:", fechaRegistro);
-alert("FORMULARIO VALIDO. Listo para enviar!")
+alert("Gracias por tu registro\nPronto "+nombre+" encontrara un hogar!");
 
 
 });
