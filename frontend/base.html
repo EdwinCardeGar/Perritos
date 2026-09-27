@@ -2,23 +2,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Ayuda a Perritos</title>
+         <!-- Conectar CSS -->
+         <link rel="stylesheet" href="style.css">
+        <!--agregar mapa interactvio-->
+         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </head>
     <body>
         <header>
             <h1>AYUDA A PERRITOS CERCA DE TI</h1>
         </header>
-        <nav>
-            <ul>
-                <li><a href="#">Registrar perritos </a></li>
-                <li><a href="#">Cerca de ti</a></li>
-                <li><a href="#">¿Cómo funciona?</a></li>
-                <li><a href="#">Acerca de nosotros</a></li>
-            </ul>
         </nav>
         <main> 
             <section>
                 <h2>REGISTRAR PERRITOS CERCA DE TI</h2>
-                <form action="#" method="post">
+                <form id="miFormulario" action="#" method="post">
 <!-- FOTO-->>
                     <label for="foto">Subir foto</label>
                     <input type="file" id="foto" name="foto" accept="image/*" capture="environment"><br><br>
@@ -36,11 +34,11 @@
                         <option value="Husky">Husky</option>
                         <option value="Pug">Pug</option>
                         <option value="Bulldog">Bulldog</option>
-                        <option value="Mestizo">Mestizo</option>
+                        <option value="Desconocido">Criollo</option>
                     </select><br><br>
 <!-- COLOR-->>
                     <label for= "color">Color</label>
-                    <select id="color" name="color">
+                    <select id="colorPrincipal" name="color">
                         <option value="">Color principal</option>
                         <option value="Negro">Negro</option>
                         <option value="Blanco">Blanco</option>
@@ -50,47 +48,42 @@
                         <option value="Crema">Crema</option>
                     </select><br><br>
 <!-- COLORES SECUNDARIOS-->>
-                    <label for= "color adicional">Color adicional</label>
-                    <select id="color adicional" name="color secundario ">
-                        <option value="">Seleccionar Color adicional</option>
-                        <option value="no tiene">Sin color adicional</option>
-                        <option value="negro">Negro</option>
-                        <option value="Blanco">Blanco</option>
-                        <option value="Marron">Marrón</option>
-                        <option value="Amarillo">Amarillo</option>
-                        <option value="Gris">Gris</option>
-                        <option value="Crema">Crema</option>
-                    </select><br><br>
+                    <fieldset>
+                        <legend>Colores adicionales (máximo dos)</legend>
+                        <label><input type="checkbox" name="colores" value="Negro"> Negro</label>
+                        <label><input type="checkbox" name="colores" value="Blanco"> Blanco</label>
+                        <label><input type="checkbox" name="colores" value="Marrón"> Marrón</label>
+                        <label><input type="checkbox" name="colores" value="Amarillo"> Amarillo</label>
+                        <label><input type="checkbox" name="colores" value="Gris"> Gris</label>
+                        <label><input type="checkbox" name="colores" value="Crema"> Crema</label>
+                    </fieldset><br>
 <!-- FECHA-->>
-                    <label for= "fecha">Fecha de registro</label>
-                    <input type="date" id="fecha registro" name="fecha registro">
-<!-- UBI-->>
-                    <button type="button" onclick="obtenerUbicacion()">Ubicacion de Perrito</button>
-                    <p id="ubicacion"></p><br>
+
+<!-- UBI Y MAPA INTERACTIVO-->
+                    <fieldset>
+                        <legend>Ubicación del perrito</legend>
+                        <button type="button" onclick="obtenerUbicacion()">Usar mi ubicación actual</button>
+                        <button type="button" id="toggleMapa" aria-expanded="false" aria-controls="mapContainer">Mostrar mapa para elegir ubicación</button>
+                        <p id="ubicacion" aria-live="polite"></p>
+                        <div id="mapContainer" hidden>
+                            <div id="map" style="height: 320px; margin-top: 10px;"></div>
+                        </div>
+                        <input type="hidden" id="latitud" name="latitud">
+                        <input type="hidden" id="longitud" name="longitud">
+                    </fieldset><br>
 <!--TERMINAR FORMULARIO-->
                     <button type="submit">Enviar perrito</button>
                 </form>
-<!--Funcion para acceder al navegador *OJO, solo accede a tu ubicacion actual, necesario que podamos usar un pin-->    
-                <script>
-    function obtenerUbicacion() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                document.getElementById("ubicacion").innerText =
-                    "Latitud: " + lat + ", Longitud: " + lon;
-
-                // Abrir en Google Maps (funciona en móviles y PC)
-                window.open(`https://www.google.com/maps?q=${lat},${lon}`);
-            }, function(error) {
-                alert("No se pudo obtener la ubicación: " + error.message);
-            });
-        } else {
-            alert("La geolocalización no está soportada en este navegador.");
-        }
-    }
-    </script>
-                </form>
+                <script src="funciones.js"></script>
         </main>
+        <nav>
+            <ul>
+                
+                <li><a href="#">Registrar perritos </a></li>
+                <li><a href="#">Cerca de ti</a></li>
+                <li><a href="#">¿Cómo funciona?</a></li>
+                <li><a href="#">Acerca de nosotros</a></li>
+                
+            </ul>
     </body>
 </html>
