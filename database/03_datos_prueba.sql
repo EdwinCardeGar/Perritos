@@ -8,7 +8,7 @@ INSERT INTO perritos (
     id_raza,
     nombre,
     descripcion,
-    id_color_principal,
+    color_principal,
     latitud,
     longitud,
     foto,
