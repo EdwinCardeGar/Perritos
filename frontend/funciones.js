@@ -1,40 +1,122 @@
-document.getElementById("miFormulario").addEventListener("submit",function(event){
-event.preventDefault();
-let nombre=document.getElementById("nombre").value.trim();
-let foto = document.getElementById("foto").files[0];
-let colorPrincipal=document.getElementById("colorPrincipal").value;
-let coloresAdicionales=Array.from(document.querySelectorAll("input[name='colores']:checked"));
-//nombrr
-if(nombre===""){
+const STORAGE_KEY = "perritosRegistrados";
+const registrationForm = document.getElementById("miFormulario");
+const dogList = document.getElementById("listaPerritos");
+
+function getRegisteredDogs() {
+  try {
+    const dogs = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return Array.isArray(dogs) ? dogs : [];
+  } catch {
+    return [];
+  }
+}
+
+function renderRegisteredDogs() {
+  dogList.replaceChildren();
+  const dogs = getRegisteredDogs();
+
+  if (dogs.length === 0) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "empty-list";
+    emptyMessage.textContent = "Todavía no hay perritos registrados en este navegador.";
+    dogList.append(emptyMessage);
+    return;
+  }
+
+  dogs.forEach((dog) => {
+    const card = document.createElement("article");
+    card.className = "dog-card";
+
+    const name = document.createElement("h3");
+    name.textContent = dog.nombre;
+    card.append(name);
+
+    const details = document.createElement("p");
+    details.textContent = `Raza: ${dog.raza} | Color: ${dog.color}`;
+    card.append(details);
+
+    if (dog.colores.length > 0) {
+      const additionalColors = document.createElement("p");
+      additionalColors.textContent = `Colores adicionales: ${dog.colores.join(", ")}`;
+      card.append(additionalColors);
+    }
+
+    if (dog.latitud !== null && dog.longitud !== null) {
+      const location = document.createElement("p");
+      location.textContent = `Ubicación: ${dog.latitud.toFixed(5)}, ${dog.longitud.toFixed(5)}`;
+      card.append(location);
+    }
+
+    dogList.append(card);
+  });
+}
+
+document.querySelectorAll("[data-open-dialog]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const dialog = document.getElementById(button.dataset.openDialog);
+    if (dialog.id === "perritosDialog") {
+      renderRegisteredDogs();
+    }
+    dialog.showModal();
+  });
+});
+
+document.querySelectorAll("[data-close-dialog]").forEach((button) => {
+  button.addEventListener("click", () => button.closest("dialog").close());
+});
+
+registrationForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = document.getElementById("nombre").value.trim();
+  const photo = document.getElementById("foto").files[0];
+  const breed = document.getElementById("raza");
+  const color = document.getElementById("colorPrincipal");
+  const additionalColors = Array.from(document.querySelectorAll("input[name='colores']:checked"));
+
+  if (name === "") {
     alert("Es necesario añadir nombre.");
     return;
   }
-//foto
-if(!foto){
+  if (!photo) {
     alert("Falta foto.");
     return;
   }
-  let formatosPermitidos=["image/jpeg", "image/png", "image/webp"];
-  if(!formatosPermitidos.includes(foto.type)){
-    alert("FORMATO DE IMAGEN NO VALIDO.\n Use JPG, PNG o WEBP");
+  const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
+  if (!allowedFormats.includes(photo.type)) {
+    alert("FORMATO DE IMAGEN NO VALIDO.\nUse JPG, PNG o WEBP");
     return;
   }
-//color1
-if (colorPrincipal===""){
-    alert("Es necesario elegir un color principal.")
+  if (color.value === "") {
+    alert("Es necesario elegir un color principal.");
     return;
   }
-//color2
-if (coloresAdicionales.length>2){
-    alert("Seleccione maximo 2 colores adicionales.")
+  if (additionalColors.length > 2) {
+    alert("Seleccione máximo 2 colores adicionales.");
     return;
   }
-//fecha, se agrega la de sysdate
-let fechaRegistro = new Date().toISOString();
-console.log("Fecha de registro:", fechaRegistro);
-alert("Gracias por tu registro\nPronto "+nombre+" encontrara un hogar!");
 
+  const latitude = document.getElementById("latitud").value;
+  const longitude = document.getElementById("longitud").value;
+  const dog = {
+    nombre: name,
+    raza: breed.options[breed.selectedIndex].text,
+    color: color.options[color.selectedIndex].text,
+    colores: additionalColors.map((input) => input.value),
+    latitud: latitude === "" ? null : Number(latitude),
+    longitud: longitude === "" ? null : Number(longitude),
+    fechaRegistro: new Date().toISOString()
+  };
 
+  try {
+    const dogs = getRegisteredDogs();
+    dogs.unshift(dog);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dogs));
+  } catch {
+    alert("No fue posible guardar el registro en este navegador.");
+    return;
+  }
+
+  alert(`Gracias por tu registro. Pronto ${name} encontrará un hogar.`);
 });
 
 let map;
