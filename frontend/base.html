@@ -1,133 +1,132 @@
+<!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Ayuda a Perritos</title>
-<!--Conectar css-->
-         <link rel="stylesheet" href="style.css">
-<!--agregar mapa interactvio-->
-         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    </head>
-    <body>
-        <header> 
-            <h1>AYUDA A PERRITOS DE LA CALLE</h1>
-            <h1.5>¡Ayudanos a registrar perritos sin hogar para que alguien pueda ayudarlos!🐶</h1.5>
-        </header>
-<!--Barra de referencias-->
-        <nav class="navbar">
-          <div class="nav-links">
-           <a href="#comenzar">Comenzar a registrar</a>
-                     <button type="button" data-open-dialog="objetivoDialog">Objetivo</button>
-                     <button type="button" data-open-dialog="perritosDialog">Cerca de mí</button>
-                     <button type="button" data-open-dialog="nosotrosDialog">Acerca de nosotros</button>
-          </div>
-        </nav>
-        <main> 
-                        <section id="comenzar">
-                <h2>REGISTRAR PERRITOS CERCA DE TI</h2>
-                <form id="miFormulario" action="#" method="post">
-<!-- FOTO-->
-                    <label for="foto">Subir foto 📷</label>
-                    <input type="file" id="foto" name="foto" accept="image/*" capture="environment" style="display:none"><br><br>
-                    <label for="foto" class="custom-file">Subir foto 📸</label>
-<!-- NOMBRE-->
-                    <label for= "nombre">Nombre 🐾</label>
-                    <input type="text" id="nombre" name="nombre">
- <!-- RAZA-->
-                    <label for= "raza">Raza 🐕</label>
-                    <select id="raza" name="raza">
-                        <option value="">Seleccione raza de perrito</option>
-                        <option value="Desconocido">Criollo</option>
-                        <option value="Pastor Aleman">Pastor aleman</option>
-                        <option value="Chihuahua">Chihuahua</option>
-                        <option value="Poodle">Poodle</option>
-                        <option value="Labrador Retriever">Labrador</option>
-                        <option value="Golden Retriever">Golden Retriever</option>
-                        <option value="Schnauzer">Schnauzer</option>
-                        <option value="Beagle">Beagle</option>
-                        <option value="Rottweiler">Rottweiler</option>
-                        <option value="Husky Siberiano">Husky</option>
-                        <option value="Boxer">Boxer</option>
-                        <option value="Dalmata">Dalmata</option>
-                        <option value="Pug">Pug</option>
-                        <option value="Bulldog">Bulldog</option>
-                    </select><br><br>
-<!-- COLOR-->
-                    <label for= "color">Color 🐶</label>
-                    <select id="colorPrincipal" name="color">
-                        <option value="">Color principal</option>
-                        <option value="Negro">Negro</option>
-                        <option value="Blanco">Blanco</option>
-                        <option value="Cafe">Cafe</option>
-                        <option value="Marrón">Marrón</option>
-                        <option value="Gris">Gris</option>
-                        <option value="Dorado">Dorado</option>
-                        <option value="Crema">Crema</option>
-                        <option value="Beige">Beige</option>
-                        <option value="Canela">Canela</option>
-                        <option value="Atigrado">Atigrado</option>
-                        <option value="Manchado">Manchado</option>
-                        <option value="Rojizo">Rojizo</option>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayuda a Perritos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+    <script src="funciones.js" defer></script>
+</head>
+<body>
+    <header id="top">
+        <h1>AYUDA A PERRITOS DE LA CALLE</h1>
+        <p class="subtitulo">¡Ayúdanos a registrar perritos sin hogar para que alguien pueda ayudarlos! 🐶</p>
+    </header>
 
-                    </select><br><br>
-<!-- COLORES SECUNDARIOS-->
-                    <fieldset>
-                        <legend>Colores adicionales (máximo dos)</legend>
-                        <label><input type="checkbox" name="colores" value="Negro"> Negro</label>
-                        <label><input type="checkbox" name="colores" value="Blanco"> Blanco</label>
-                        <label><input type="checkbox" name="colores" value="Marrón"> Marrón</label>
-                        <label><input type="checkbox" name="colores" value="Cafe"> Cafe</label>
-                        <label><input type="checkbox" name="colores" value="Dorado"> Dorado</label>
-                        <label><input type="checkbox" name="colores" value="Canela"> Canela</label>
-                        <label><input type="checkbox" name="colores" value="Beige"> Beige</label>
-                        <label><input type="checkbox" name="colores" value="Gris"> Gris</label>
-                        <label><input type="checkbox" name="colores" value="Crema"> Crema</label>
-                        <label><input type="checkbox" name="colores" value="Rojizo"> Rojizo</label>
-                    </fieldset><br>
-<!-- FECHA-->
+    <nav class="navbar" aria-label="Navegación principal">
+        <div class="nav-links">
+            <a href="#comenzar">Comenzar a registrar</a>
+            <button type="button" data-open-dialog="objetivoDialog">Objetivo</button>
+            <button type="button" data-open-dialog="perritosDialog">Cerca de mí</button>
+            <button type="button" data-open-dialog="nosotrosDialog">Acerca de nosotros</button>
+        </div>
+    </nav>
 
-<!-- UBI Y MAPA INTERACTIVO-->
-                    <fieldset>
-                        <legend>Ubicación del perrito</legend>
-                        <button type="button" onclick="obtenerUbicacion()">Usar mi ubicación actual</button>
-                        <button type="button" id="toggleMapa" aria-expanded="false" aria-controls="mapContainer">Mostrar mapa para elegir ubicación</button>
-                        <p id="ubicacion" aria-live="polite"></p>
-                        <div id="mapContainer" hidden>
-                            <div id="map" style="height: 320px; margin-top: 10px;"></div>
-                        </div>
-                        <input type="hidden" id="latitud" name="latitud">
-                        <input type="hidden" id="longitud" name="longitud">
-                    </fieldset><br>
-<!--TERMINAR FORMULARIO-->
-                    <button type="submit">Enviar perrito</button>
-                </form>
-            </section>
-        </main>
-<!--OBJRTIVO-->
-        <dialog id="objetivoDialog" class="info-dialog" aria-labelledby="objetivoTitulo">
-            <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
-            <h2 id="objetivoTitulo">Nuestro objetivo</h2>
-            <p>Generar un sistema para ayudar a perritos de la calle y personas que buscan un amigo nuevo en sus hogares.</p>
-        </dialog>
-<!--LISTA-->        
-        <dialog id="perritosDialog" class="info-dialog" aria-labelledby="perritosTitulo">
-            <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
-            <h2 id="perritosTitulo">Perritos registrados</h2>
-            <p class="dialog-note">Los registros de esta lista se guardan en este navegador.</p>
-            <div id="listaPerritos" class="dog-list" aria-live="polite"></div>
-        </dialog>
-<!--ABOTUS-->        
-        <dialog id="nosotrosDialog" class="info-dialog" aria-labelledby="nosotrosTitulo">
-            <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
-            <h2 id="nosotrosTitulo">Acerca de nosotros</h2>
-            <p>Somos estudiamtes del Instituto Tecnologico de Saltillo, cursando la carrera de Ingeniería en Sistemas Computacionales. Este proyecto académico busca aplicar la programación para ayudar a los perritos sin hogar.</p>
-        </dialog>
-        
-        <footer class="footer">
-            <div class="container">
-                <p>&copy; 2026 Proyecto Programación Lógica y Funcional | Instituto Tecnológico de Saltillo | Ingeniería en Sistemas Computacionales</p>
-            </div>
-        </footer>
-        <script src="funciones.js"></script>
-    </body>
+    <main>
+        <section id="comenzar">
+            <h2>REGISTRAR PERRITOS CERCA DE TI</h2>
+            <form id="miFormulario" novalidate>
+                <label for="foto">Foto del perrito *</label>
+                <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+                <label for="foto" class="custom-file">Seleccionar foto</label>
+                <p id="nombreArchivoFoto" class="file-name" aria-live="polite"></p>
+
+                <label for="nombre">Nombre *</label>
+                <input type="text" id="nombre" name="nombre" maxlength="100" required>
+
+                <label for="raza">Raza</label>
+                <select id="raza" name="id_raza">
+                    <option value="">Seleccione una raza</option>
+                    <option value="1">Sin raza definida / criollo</option>
+                    <option value="2">Labrador Retriever</option>
+                    <option value="3">Pastor Alemán</option>
+                    <option value="4">Golden Retriever</option>
+                    <option value="5">Chihuahua</option>
+                    <option value="6">Poodle</option>
+                    <option value="7">Beagle</option>
+                    <option value="8">Husky Siberiano</option>
+                    <option value="9">Rottweiler</option>
+                    <option value="10">Pug</option>
+                    <option value="11">Bulldog</option>
+                    <option value="12">Boxer</option>
+                    <option value="13">Schnauzer</option>
+                    <option value="14">Dálmata</option>
+                </select>
+
+                <label for="colorPrincipal">Color principal *</label>
+                <select id="colorPrincipal" name="color_principal" required>
+                    <option value="">Seleccione un color</option>
+                    <option value="1">Negro</option>
+                    <option value="2">Blanco</option>
+                    <option value="3">Café</option>
+                    <option value="4">Marrón</option>
+                    <option value="5">Gris</option>
+                    <option value="6">Dorado</option>
+                    <option value="7">Crema</option>
+                    <option value="8">Beige</option>
+                    <option value="9">Canela</option>
+                    <option value="10">Atigrado</option>
+                    <option value="11">Manchado</option>
+                    <option value="12">Negro y blanco</option>
+                    <option value="13">Rojizo</option>
+                </select>
+
+                <fieldset id="coloresAdicionales">
+                    <legend>Colores adicionales (máximo dos)</legend>
+                    <label><input type="checkbox" name="colores" value="1"> Negro</label>
+                    <label><input type="checkbox" name="colores" value="2"> Blanco</label>
+                    <label><input type="checkbox" name="colores" value="3"> Café</label>
+                    <label><input type="checkbox" name="colores" value="4"> Marrón</label>
+                    <label><input type="checkbox" name="colores" value="5"> Gris</label>
+                    <label><input type="checkbox" name="colores" value="6"> Dorado</label>
+                    <label><input type="checkbox" name="colores" value="7"> Crema</label>
+                    <label><input type="checkbox" name="colores" value="8"> Beige</label>
+                    <label><input type="checkbox" name="colores" value="9"> Canela</label>
+                    <label><input type="checkbox" name="colores" value="10"> Atigrado</label>
+                    <label><input type="checkbox" name="colores" value="11"> Manchado</label>
+                    <label><input type="checkbox" name="colores" value="12"> Negro y blanco</label>
+                    <label><input type="checkbox" name="colores" value="13"> Rojizo</label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Ubicación del perrito *</legend>
+                    <button type="button" id="usarUbicacion">Usar mi ubicación actual</button>
+                    <button type="button" id="toggleMapa" aria-expanded="false" aria-controls="mapContainer">Mostrar mapa para elegir ubicación</button>
+                    <p id="ubicacion" aria-live="polite"></p>
+                    <div id="mapContainer" hidden>
+                        <div id="map"></div>
+                    </div>
+                    <input type="hidden" id="latitud" name="latitud">
+                    <input type="hidden" id="longitud" name="longitud">
+                </fieldset>
+
+                <button type="submit" id="btnSubmit">Enviar perrito</button>
+                <p id="estadoEnvio" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+
+    <dialog id="objetivoDialog" class="info-dialog" aria-labelledby="objetivoTitulo">
+        <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
+        <h2 id="objetivoTitulo">Nuestro objetivo</h2>
+        <p>Facilitar el registro y la localización de perritos sin hogar para que la comunidad pueda conocer su situación y brindarles apoyo.</p>
+    </dialog>
+    <dialog id="perritosDialog" class="info-dialog dogs-dialog" aria-labelledby="perritosTitulo">
+        <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
+        <h2 id="perritosTitulo">Perritos registrados</h2>
+        <div id="mapaGeneral" aria-label="Mapa de perritos registrados"></div>
+        <div id="listaPerritos" class="tarjetas-grid" aria-live="polite"></div>
+    </dialog>
+    <dialog id="nosotrosDialog" class="info-dialog" aria-labelledby="nosotrosTitulo">
+        <button type="button" class="dialog-close" data-close-dialog aria-label="Cerrar ventana">&times;</button>
+        <h2 id="nosotrosTitulo">Acerca de nosotros</h2>
+        <p>Somos estudiantes de Ingeniería en Sistemas Computacionales del Instituto Tecnológico de Saltillo. Este proyecto académico aplica la programación para apoyar a los perritos sin hogar.</p>
+    </dialog>
+
+    <footer>
+        <p>&copy; 2026 Proyecto Programación Lógica y Funcional | Instituto Tecnológico de Saltillo</p>
+    </footer>
+</body>
 </html>

@@ -82,7 +82,7 @@ CREATE INDEX idx_perritos_raza
     ON perritos(id_raza);
 
 CREATE INDEX idx_perritos_color_principal
-    ON perritos(id_color_principal);
+    ON perritos(color_principal);
 
 CREATE INDEX idx_perritos_fecha
     ON perritos(fecha_registro);
