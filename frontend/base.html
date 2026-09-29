@@ -29,7 +29,7 @@
             <h2>REGISTRAR PERRITOS CERCA DE TI</h2>
             <form id="miFormulario" novalidate>
                 <label for="foto">Foto del perrito *</label>
-                <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+                <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp" hidden>
                 <label for="foto" class="custom-file">Seleccionar foto</label>
                 <p id="nombreArchivoFoto" class="file-name" aria-live="polite"></p>
 
@@ -39,55 +39,16 @@
                 <label for="raza">Raza</label>
                 <select id="raza" name="id_raza">
                     <option value="">Seleccione una raza</option>
-                    <option value="1">Sin raza definida / criollo</option>
-                    <option value="2">Labrador Retriever</option>
-                    <option value="3">Pastor Alemán</option>
-                    <option value="4">Golden Retriever</option>
-                    <option value="5">Chihuahua</option>
-                    <option value="6">Poodle</option>
-                    <option value="7">Beagle</option>
-                    <option value="8">Husky Siberiano</option>
-                    <option value="9">Rottweiler</option>
-                    <option value="10">Pug</option>
-                    <option value="11">Bulldog</option>
-                    <option value="12">Boxer</option>
-                    <option value="13">Schnauzer</option>
-                    <option value="14">Dálmata</option>
                 </select>
 
                 <label for="colorPrincipal">Color principal *</label>
                 <select id="colorPrincipal" name="color_principal" required>
                     <option value="">Seleccione un color</option>
-                    <option value="1">Negro</option>
-                    <option value="2">Blanco</option>
-                    <option value="3">Café</option>
-                    <option value="4">Marrón</option>
-                    <option value="5">Gris</option>
-                    <option value="6">Dorado</option>
-                    <option value="7">Crema</option>
-                    <option value="8">Beige</option>
-                    <option value="9">Canela</option>
-                    <option value="10">Atigrado</option>
-                    <option value="11">Manchado</option>
-                    <option value="12">Negro y blanco</option>
-                    <option value="13">Rojizo</option>
                 </select>
 
                 <fieldset id="coloresAdicionales">
                     <legend>Colores adicionales (máximo dos)</legend>
-                    <label><input type="checkbox" name="colores" value="1"> Negro</label>
-                    <label><input type="checkbox" name="colores" value="2"> Blanco</label>
-                    <label><input type="checkbox" name="colores" value="3"> Café</label>
-                    <label><input type="checkbox" name="colores" value="4"> Marrón</label>
-                    <label><input type="checkbox" name="colores" value="5"> Gris</label>
-                    <label><input type="checkbox" name="colores" value="6"> Dorado</label>
-                    <label><input type="checkbox" name="colores" value="7"> Crema</label>
-                    <label><input type="checkbox" name="colores" value="8"> Beige</label>
-                    <label><input type="checkbox" name="colores" value="9"> Canela</label>
-                    <label><input type="checkbox" name="colores" value="10"> Atigrado</label>
-                    <label><input type="checkbox" name="colores" value="11"> Manchado</label>
-                    <label><input type="checkbox" name="colores" value="12"> Negro y blanco</label>
-                    <label><input type="checkbox" name="colores" value="13"> Rojizo</label>
+                    <!-- Las casillas se generan en funciones.js desde /api/catalogos/colores -->
                 </fieldset>
 
                 <fieldset>

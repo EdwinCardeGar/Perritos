@@ -1,55 +1,25 @@
 # Respaldo y restauración de la base de datos
 
+La base es un único archivo SQLite (`database/perritos.db`). Se crea sola al iniciar el
+backend con `01_schema.sql`, `02_catalogos.sql` y `03_datos_prueba.sql` (15 perritos).
+
 ## Respaldo
-
-La base de datos utilizada por el proyecto es `registro_perritos` en MySQL 8.0.
-
-Para generar un respaldo completo se utiliza `mysqldump`:
-
-```powershell
-& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe" -u root -p --single-transaction registro_perritos > database\respaldo_perritos.sql
 ```
-
-El archivo generado es:
-
-```text
-database/respaldo_perritos.sql
+cd backend
+python respaldo.py respaldar
 ```
-
-El respaldo incluye la estructura y los datos de la base de datos.
+Genera `database/respaldo_perritos.sql` (estructura + datos, en UTF-8).
 
 ## Restauración
-
-Para restaurar el respaldo se utiliza:
-
-```powershell
-& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p registro_perritos < database\respaldo_perritos.sql
 ```
-
-Si la base de datos no existe, primero se puede crear:
-
-```sql
-CREATE DATABASE registro_perritos
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_0900_ai_ci;
+cd backend
+python respaldo.py restaurar
 ```
-
-Después se ejecuta el comando de restauración.
+Guarda la base actual como `perritos.bak` y la recrea desde el respaldo.
 
 ## Verificación
-
-Después de restaurar se puede comprobar que las tablas existan con:
-
-```sql
-USE registro_perritos;
-SHOW TABLES;
 ```
-
-Y verificar la cantidad de registros:
-
-```sql
-SELECT COUNT(*) AS total_perritos
-FROM perritos;
+python -c "import sqlite3;print(sqlite3.connect('../database/perritos.db').execute('SELECT COUNT(*) FROM perritos').fetchone())"
 ```
-
-La base utilizada para las pruebas contiene actualmente 15 registros de perritos.
+Debe mostrar `(15,)` en una instalación nueva. Para volver al estado inicial basta con borrar
+`database/perritos.db` y reiniciar el backend.

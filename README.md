@@ -1,210 +1,159 @@
-# Perritos
-Proyecto: Programación Lógica y Funcional, 6:00pm  Ago-Dic2026
-INSTRUCCIONES DE USO: 
 # 🐶 Registro de Perritos de la Calle
 
-Aplicación web desarrollada para registrar perros en situación de calle mediante fotografía, nombre, características físicas y geolocalización en un mapa interactivo con Leaflet. Cumple con los requerimientos técnicos de la Unidad 1 de la materia **Programación Lógica y Funcional**.
+Proyecto: Programación Lógica y Funcional, 6:00 pm, Ago–Dic 2026.
+Aplicación web para registrar perros en situación de calle con foto, nombre, raza, colores y
+ubicación en un mapa (Leaflet). **Funciona en Windows, macOS y Linux, sin Docker y sin instalar
+ningún servidor de base de datos** (usa SQLite, que ya viene con Python).
 
----
+## 1. Integrantes y roles
 
-## 1. Integrantes del Equipo y Roles
-
-| Integrante | Rol | Responsabilidades asignadas |
+| Integrante | Rol | Responsabilidades |
 | :--- | :--- | :--- |
-| **Edwin Uriel Cárdenas Garza** | **Frontend** | Interfaces de usuario (`base.html`, `style.css`), interacción con mapa Leaflet, captura con cámara/archivo, validaciones en cliente y diseño responsive para celular. |
-| **René Emiliano Olivares saucedo** | **Backend** | API REST en Python (FastAPI), validación estricta de servidor, almacenamiento externo de fotos, endpoints del sistema y manejo de idempotencia. |
-| **Xavier Israel Saucedo Castillo** | **DBA** | Esquema de base de datos relacional (MySQL), scripts de tablas, catálogos base (razas y colores), datos de prueba y respaldos. |
+| **Edwin Uriel Cárdenas Garza** | Frontend | `base.html`, `style.css`, `funciones.js`, mapa Leaflet, cámara/archivo, validaciones en cliente, diseño móvil. |
+| **René Emiliano Olivares Saucedo** | Backend | API REST (FastAPI), validación en servidor, almacenamiento externo de fotos, idempotencia. |
+| **Xavier Israel Saucedo Castillo** | DBA | Esquema, catálogos, datos de prueba y respaldos (`database/`). |
 
----
+## 2. Requisitos
 
-## 2. Requisitos Previos (Versiones Exactas)
+* **Python 3.10 o superior** (`python --version`; en Mac/Linux `python3 --version`). Descarga: https://www.python.org/downloads/ (en Windows marca *"Add python.exe to PATH"*).
+* **Git** (https://git-scm.com/downloads).
+* Un navegador moderno (Chrome, Edge, Firefox, Safari).
+* Internet (para los mapas de OpenStreetMap/Leaflet y para el túnel de Cloudflare).
 
-El sistema se ejecuta **directamente en el sistema operativo anfitrión sin Docker**:
+No se necesita MySQL, Docker ni configurar variables de entorno.
 
-* **Sistema Operativo:** Windows 10/11 o Linux Ubuntu 22.04+
-* **Python:** `3.14.7` (o superior compatible, verificable con `python --version`)
-* **Gestor de paquetes:** `pip`
-* **Manejador de Base de Datos:** `MySQL Community Server 8.0.x`
-* **Navegador Web:** Google Chrome, Microsoft Edge o Mozilla Firefox con soporte de MediaDevices (cámara) y API de Geolocalización
+## 3. Instalación
 
----
-
-## 3. Pasos de Instalación
-
-Ejecutar los siguientes comandos en una terminal con permisos estándar:
-
-### 3.1. Clonar el repositorio
-```cmd
-git clone [https://github.com/EdwinCardeGar/Perritos.git](https://github.com/EdwinCardeGar/Perritos.git)
+```bash
+git clone https://github.com/EdwinCardeGar/Perritos.git
 cd Perritos
+```
 
-### 3.2. Crear el directorio externo para fotos
-Las imágenes no se guardan dentro del código fuente por motivos de seguridad y aislamiento de datos subidos por usuarios:
-
-* En Windows:
+**Windows (CMD o PowerShell)**
 ```cmd
-mkdir C:\PerritosStorage\media
-
-3.3. Configurar dependencias del BackendDOScd backend
 python -m venv venv
 venv\Scripts\activate
-pip install fastapi uvicorn filetype pydantic mysql-connector-python requests
+pip install -r requirements.txt
+```
+> Si PowerShell bloquea `activate`: `Set-ExecutionPolicy -Scope Process Bypass` y vuelve a intentar.
 
-4. Creación de la Base de Datos y Carga de Datos de PruebaAcceder a MySQL y ejecutar los scripts SQL en el siguiente orden:   DOSmysql -u root -p
-Dentro del cliente de MySQL:SQLCREATE DATABASE IF NOT EXISTS registro_perritos;
-USE registro_perritos;
+**macOS / Linux**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
--- 1. Estructura de tablas y restricciones de integridad
-SOURCE database/01_schema.sql;
+## 4. Ejecución (un solo comando)
 
--- 2. Catálogos base (mínimo 10 razas y 10 colores)
-SOURCE database/02_catalogos.sql;
-
--- 3. Cargar los 15 perritos de prueba iniciales con foto
-SOURCE database/03_datos_prueba.sql;
-
-Comprobar que los datos iniciales se hayan registrado:   SQLSELECT COUNT(*) AS total_perritos FROM perritos;
-(Debe devolver al menos 15 registros cargados con sus respectivas fotografías)   
-
-5. Configuración de Variables de Entorno
-Crear el archivo .env dentro de la carpeta backend/ con las credenciales locales y la ruta de imágenes:   
--
-
-Ini, TOML
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=registro_perritos
-DB_USER=root
-DB_PASSWORD=tu_password_aqui
-RUTA_IMAGENES=C:/PerritosStorage/media
-
-6. Ejecución del Backend y Frontend
-Iniciar ambos servicios de forma directa en dos consolas independientes:   
--
-
-Terminal 1: Backend (FastAPI / Uvicorn)
-DOS
+```bash
 cd backend
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-API base: http://localhost:8000
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
+*(en Mac/Linux, `python3` si `python` no existe; con el entorno activado normalmente basta `python`)*
 
+Al primer arranque se crea automáticamente `database/perritos.db` con las tablas, los catálogos
+(14 razas, 13 colores) y los **15 perritos de prueba**. Abre:
 
-Documentación OpenAPI interactiva: http://localhost:8000/docs
+* Aplicación: http://localhost:8000
+* Documentación interactiva de la API: http://localhost:8000/docs
 
-Terminal 2: Frontend
-DOS
-cd frontend
-python -m http.server 5500 --bind 0.0.0.0
-URL de acceso local: http://localhost:5500/base.html
+El mismo servidor entrega la API **y** la página, por eso no hace falta un segundo servidor para el frontend.
 
-   
-7. Pruebas desde un Celular en la Misma Red
-Obtener la IP local de la computadora en la terminal ejecutando ipconfig (ejemplo: 192.168.0.15).
+Comprobar los datos: abre http://localhost:8000/api/perritos (deben aparecer 15).
 
-Conectar el teléfono móvil a la misma red Wi-Fi de la computadora.   
+## 5. Acceso desde el celular u otra PC
 
-Abrir el navegador en el teléfono móvil e ingresar a:
+### Opción A — Internet con Cloudflare Tunnel (recomendada: da HTTPS, necesario para cámara y GPS)
 
-Plaintext
-[http://192.168.0.15:5500/base.html](http://192.168.0.15:5500/base.html)
-Para la cámara y ubicación satelital en navegadores móviles sin HTTPS, habilitar orígenes no seguros en Chrome móvil desde chrome://flags/#unsafely-treat-insecure-origin-as-secure agregando http://192.168.0.15:5500.   
--
+1. Instala `cloudflared` (una sola vez):
+   * Windows: `winget install --id Cloudflare.cloudflared` (o descarga el `.exe` en https://github.com/cloudflare/cloudflared/releases)
+   * macOS: `brew install cloudflared`
+   * Ubuntu/Debian: descarga el `.deb` de la página de releases anterior.
+2. Con el backend corriendo (paso 4), abre **otra terminal** y ejecuta:
+   ```bash
+   cloudflared tunnel --url http://localhost:8000
+   ```
+3. Aparecerá una URL como `https://algo-aleatorio.trycloudflare.com`. Ábrela desde cualquier celular
+   o computadora (no necesitan estar en la misma red). La página funciona sin cambios porque usa rutas relativas (`/api`).
 
-========================================================================================================================
-8. LISTA DE ENDPOINTS DE LA API
-========================================================================================================================
+> La URL cambia cada vez que reinicias el túnel y solo existe mientras ambas terminales sigan abiertas. No requiere cuenta de Cloudflare. Para una URL fija se necesita cuenta y dominio propio (túnel con nombre).
 
-METODO | ENDPOINT                 | DESCRIPCION                                      | ENCABEZADOS / PARAMETROS
--------+--------------------------+--------------------------------------------------+----------------------------------
-POST   | /api/perritos            | Registra un nuevo perrito. Valida campos         | Header: Idempotency-Key (UUID)
-       |                          | obligatorios, tipo MIME real e idempotencia.     | Body: multipart/form-data
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/perritos            | Lista todos los perritos registrados para        | Ninguno
-       |                          | renderizar los pines del mapa y la lista con     |
-       |                          | miniaturas de fotos.                             |
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/perritos/{id}       | Devuelve la ficha tecnica y el detalle completo  | Parametro en URL: id
-       |                          | de un perrito especifico.                        |
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/catalogos/razas     | Retorna el catalogo de razas disponibles         | Ninguno
-       |                          | (incluye 'Sin raza definida / criollo').         |
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/catalogos/colores   | Retorna el catalogo de colores de pelaje         | Ninguno
-       |                          | disponibles.                                     |
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/fotos/{archivo}     | Endpoint seguro para servir la imagen guardada   | Parametro en URL: nombre_archivo
-       |                          | fuera del codigo fuente del proyecto.            |
--------+--------------------------+--------------------------------------------------+----------------------------------
-GET    | /api/estadisticas/colores| Agregacion declarativa SQL: calcula cuantos      | Ninguno
-       |                          | perritos hay registrados por color.              |
-========================================================================================================================
-9. Capturas de Pantalla
-(Adjuntar capturas de pantalla de la vista móvil, el formulario con foto, el mapa general con pines interactivos y la lista con miniaturas)   
+### Opción B — Misma red Wi-Fi (sin Cloudflare)
 
+1. Averigua la IP de la PC: `ipconfig` (Windows) o `ifconfig` / `ipconfig getifaddr en0` (Mac).
+2. En el celular abre `http://<IP>:8000` (ej. `http://192.168.0.15:8000`). Permite el puerto 8000 en el firewall si lo pide.
+3. Sin HTTPS, Chrome móvil bloquea GPS y cámara: usa la Opción A, o selecciona la ubicación tocando el mapa y elige la foto desde la galería.
 
-10. Problemas Comunes y Soluciones
-Error de conexión con la base de datos: Verificar que el servicio MySQL esté corriendo en el puerto 3306 y que las credenciales en el archivo .env coincidan con el usuario local.
+## 6. Estructura del repositorio
 
-Error 404 al abrir el Frontend: Asegurarse de abrir http://localhost:5500/base.html y forzar recarga limpia con Ctrl + F5.
+```
+Perritos/
+├── backend/    main.py (API) · database.py · services.py (funcional) · respaldo.py · test_idempotency.py
+├── frontend/   base.html · style.css · funciones.js
+├── database/   01_schema.sql · 02_catalogos.sql · 03_datos_prueba.sql · 04_consultas.sql · 05_respaldo.md · respaldo_perritos.sql
+├── media/      pruebas/ (15 fotos de ejemplo). Las fotos que suban los usuarios se guardan aquí, fuera del código y fuera de git.
+├── requirements.txt
+└── README.md
+```
 
-Permiso de cámara o ubicación bloqueado: Los navegadores exigen entornos seguros (HTTPS o localhost) para activar sensores de hardware. En red local, activar la excepción en el navegador móvil o usar el túnel público.   
+Las fotos de `media/pruebas/` son imágenes de ejemplo; para usar fotos reales reemplázalas conservando el nombre (`max.png`, `luna.png`, …).
 
+## 7. Endpoints de la API
 
-11. Sección Paradigmas
-Declarativo vs. Imperativo en Datos
-Declarativo (SQL): El ordenamiento, filtrado y agregación se resuelven exclusivamente mediante el motor SQL en app/database.py.   
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| POST | `/api/perritos` | Registra un perrito (`multipart/form-data`). Header obligatorio `Idempotency-Key` (UUID). Campos: `nombre`, `latitud`, `longitud`, `color_principal`, `id_raza` (opcional), `colores_adicionales` (ej. `"2,3"`), `foto`. Responde **201** si es nuevo y **200** si la clave ya existía. |
+| GET | `/api/perritos` | Lista todos los perritos (pines del mapa y tarjetas). |
+| GET | `/api/perritos/{id}` | Detalle de un perrito. |
+| GET | `/api/catalogos/razas` | Catálogo de razas (alias `/api/razas`). |
+| GET | `/api/catalogos/colores` | Catálogo de colores (alias `/api/colores`). |
+| GET | `/api/fotos/{archivo}` | Sirve la foto guardada fuera del código fuente (protegido contra `../`). |
+| GET | `/api/estadisticas/colores` | Perritos por color (agregación SQL). |
 
-Se implementó una consulta con JOIN entre perritos y su tabla intermedia de colores para reconstruir los registros.   
+## 8. Base de datos (SQLite)
 
+Esquema según `diagrama_er.png`: `razas`, `colores`, `perritos` y la tabla intermedia `perrito_colores`
+(colores adicionales, máximo 2; el principal está en `perritos.color_principal`).
+Restricciones: llaves foráneas activas, `CHECK` de nombre no vacío y de rango de latitud/longitud, y `UNIQUE` sobre `clave_idempotencia`.
 
-Se implementó una consulta de agregación con GROUP BY y COUNT() para obtener perritos por color directamente en la base sin usar ciclos en Python.   
+* Volver al estado inicial: borra `database/perritos.db` y reinicia el backend.
+* Respaldo/restauración: ver `database/05_respaldo.md` (`python respaldo.py respaldar | restaurar`).
 
+## 9. Idempotencia del registro
 
-Declarativo (Frontend): HTML y CSS especifican la estructura visual y restricciones del formulario de forma descriptiva.   
+* **Cliente:** `funciones.js` genera un UUID al cargar la página y lo envía en `Idempotency-Key`. Solo se renueva después de un registro exitoso; si hay error de red o doble clic se reenvía la misma clave.
+* **Servidor:** busca la clave en `perritos.clave_idempotencia` (columna `UNIQUE`). Si existe, no inserta nada y devuelve **200** con el mismo `id`. Si dos peticiones llegan al mismo tiempo, la restricción `UNIQUE` frena a la segunda y también recibe el registro original.
+* **Demostración** (con el servidor encendido):
+  ```bash
+  cd backend
+  python test_idempotency.py
+  ```
+  Envía dos peticiones con la misma clave y comprueba: primera 201, segunda 200, mismo ID y una sola fila nueva.
 
+## 10. Sección Paradigmas
 
-Imperativo: Empleado en app/main.py para la secuencia estricta de validación de campos, comprobación de cabeceras, almacenamiento en disco y control del flujo de respuesta.   
--
+* **Declarativo (SQL):** filtrado, `JOIN`, ordenamiento y agregación (`GROUP BY` + `COUNT`, `GROUP_CONCAT`) se resuelven en el motor SQL (`main.py`, `database/04_consultas.sql`), sin ciclos en Python.
+* **Declarativo (frontend):** HTML y CSS describen la estructura y el estilo del formulario.
+* **Funcional:** `backend/services.py → procesar_colores_funcional` usa `map`, `filter` y `reduce` para normalizar, quitar vacíos y duplicados y limitar a 3 colores, sin mutar colecciones.
+* **Imperativo:** `main.py → registrar_perrito` ejecuta la secuencia estricta: validar clave → revisar idempotencia → validar campos e imagen (magic bytes) → guardar foto → insertar en transacción.
 
-Paradigma Funcional
-Transformación de datos sin mutación: Implementada en app/services.py dentro de la función procesar_colores_funcional.   
--
+## 11. Problemas comunes
 
-Utiliza funciones de orden superior (map, filter, reduce) para descomponer la cadena de colores, omitir vacíos, evitar duplicados y limitar a un máximo de 3 colores en total sin usar bucles explícitos ni alterar colecciones mutables.   
--
+| Problema | Solución |
+| :--- | :--- |
+| `python` no se reconoce | Reinstala Python marcando *Add to PATH*, o usa `py` (Windows) / `python3` (Mac/Linux). |
+| `No module named 'multipart'` o `fastapi` | Activa el entorno (`venv`) y ejecuta `pip install -r requirements.txt`. |
+| Puerto 8000 ocupado | Usa `--port 8001` (y `cloudflared tunnel --url http://localhost:8001`). |
+| Cámara/GPS bloqueados en el celular | Necesitan HTTPS: usa el túnel de Cloudflare (sección 5A). |
+| Cambios en JS/CSS no se ven | Recarga forzada: `Ctrl + F5` (`Cmd + Shift + R` en Mac). |
+| Quiero empezar de cero | Borra `database/perritos.db` y reinicia el backend. |
 
-Idempotencia del Registro
-Mecanismo: El formulario cliente genera un UUID único (Idempotency-Key) al cargarse.   
--
+## 12. Despliegue permanente (opcional)
 
-Comportamiento: Si el usuario presiona dos veces el botón o la red reintenta la solicitud, el backend detecta la clave en la tabla perritos, no duplica la fila y devuelve la respuesta previa con el mismo identificador (id) y código 200 OK sin arrojar error.   
--
+Servidor Linux con FastAPI bajo `systemd`, Nginx/Caddy como proxy inverso con HTTPS hacia el puerto 8000, y `media/` en una ruta fuera del código (variable `RUTA_IMAGENES`). La ruta de la BD puede cambiarse con `DB_PATH`.
 
-Demostración:
+## 13. Capturas de pantalla
+*(Adjuntar: vista móvil, formulario con foto, mapa general con pines y lista con miniaturas.)*
 
-DOS
-python test_idempotency.py
-(El script ejecuta dos peticiones seguidas con la misma clave y valida que ambas devuelvan el mismo ID)   
--
-
-12. Sección Despliegue (Punto Extra - Acceso desde Internet)
-Arquitectura de Producción Explicada
-Servidor de Aplicaciones: FastAPI corre administrado por systemd para reinicio automático ante fallos de proceso.   
--
-
-Proxy Inverso y HTTPS: Nginx o Caddy gestionan los certificados SSL/TLS en el puerto 443 y redirigen las peticiones hacia el puerto 8000 interno.   
--
-
-Base de Datos: MySQL escucha exclusivamente en 127.0.0.1:3306, protegida contra accesos externos directos.   
--
-
-Almacenamiento: El directorio de fotos /var/perritos/media permanece fuera del código fuente con permisos de acceso restringidos.   
--
-
-URL Pública en Vivo
-Método utilizado: Túnel seguro mediante Cloudflare Tunnel (cloudflared).   
--
-
-URL de acceso: https://tudominio-o-tunel.trycloudflare.com/base.html
-
-[cite: 1]
+**URL pública de la demostración:** `https://________.trycloudflare.com`

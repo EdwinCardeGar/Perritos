@@ -42,17 +42,6 @@ input, select, button, textarea {
     border: 1px solid #ccc;
 }
 
-input[type="checkbox"] {
-    width: auto;
-    margin-right: 6px;
-}
-
-fieldset {
-    margin: 18px 0;
-    border: 1px solid #cbd8e2;
-    border-radius: 6px;
-}
-
 button {
     background: #74b8f0;
     color: white;
@@ -85,125 +74,6 @@ button:hover{
     background: #1e89e0;
 }
 
-.navbar {
-    border-bottom: 1px solid rgba(30, 137, 224, 0.35);
-    background: white;
-    padding: 10px 16px;
-}
-
-.nav-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.nav-links a,
-.nav-links button {
-    color: #1e89e0;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px 16px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.nav-links a:hover,
-.nav-links a:focus-visible,
-.nav-links button:hover,
-.nav-links button:focus-visible {
-    color: #126db6;
-    background: #e8f5ff;
-}
-
-.nav-links button {
-    width: auto;
-    margin: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-}
-
-.info-dialog {
-    box-sizing: border-box;
-    width: min(90vw, 560px);
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 28px;
-    border: 1px solid rgba(30, 137, 224, 0.35);
-    border-radius: 8px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
-}
-
-.info-dialog::backdrop {
-    background: rgba(20, 38, 52, 0.55);
-}
-
-.info-dialog h2 {
-    margin: 0 0 18px;
-    padding: 0;
-    text-align: left;
-}
-
-.dialog-close {
-    float: right;
-    width: 36px;
-    height: 36px;
-    margin: -12px -12px 12px 12px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: #1e89e0;
-    font-size: 24px;
-    line-height: 1;
-}
-
-.dialog-note {
-    margin-top: -8px;
-    color: #555;
-}
-
-.dog-list {
-    display: grid;
-    gap: 12px;
-}
-
-.dog-card {
-    padding: 14px;
-    border: 1px solid #d4e9f8;
-    border-left: 4px solid #1e89e0;
-    border-radius: 6px;
-    background: white;
-}
-
-.dog-card h3 {
-    margin: 0 0 8px;
-    color: #126db6;
-}
-
-.dog-card p {
-    margin: 6px 0 0;
-}
-
-.empty-list {
-    margin: 0;
-}
-
-
-footer{
-    background: #74b8f0;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    bottom: 0;
-    width: 100%;
-}
 
 #map {
     height: 300px;
@@ -211,17 +81,7 @@ footer{
     border: 2px solid #ccc;
     border-radius: 8px;
 }
-
-@media (max-width: 420px) {
-    .nav-links a {
-        padding: 8px 10px;
-    }
-
-    .nav-links button {
-        padding: 8px 10px;
-    }
-}
-
+/* Subtítulo */
 .subtitulo {
     font-size: 1.1em;
     margin-top: 5px;
@@ -254,13 +114,8 @@ footer{
     padding: 10px;
 }
 
-.info-perro h4 {
-    margin: 0 0 5px 0;
-    color: #1e89e0;
-}
-
 .info-perro h3 {
-    margin: 0 0 5px;
+    margin: 0 0 5px 0;
     color: #1e89e0;
 }
 
@@ -279,13 +134,20 @@ footer{
     }
 }
 
-#mapaGeneral {
-    height: 320px;
-    margin-bottom: 18px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
+/* --- Ajustes añadidos --- */
+input[type="checkbox"] { width: auto; margin: 0 6px 0 0; }
+#coloresAdicionales label { display: inline-block; margin-right: 12px; font-weight: normal; }
+fieldset { border: 1px solid #ddd; border-radius: 8px; margin-top: 15px; }
+.navbar .nav-links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 10px; }
+.navbar a, .navbar button {
+    width: auto; margin: 0; padding: 8px 14px; border-radius: 5px; border: none;
+    background: #74b8f0; color: white; text-decoration: none; font-size: 0.9em; cursor: pointer;
 }
-
-.dogs-dialog {
-    width: min(94vw, 900px);
-}
+.navbar a:hover, .navbar button:hover { background: #1e89e0; }
+#mapaGeneral { height: 300px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 10px; }
+.info-dialog { max-width: 900px; width: 90%; border: none; border-radius: 8px; }
+.info-dialog::backdrop { background: rgba(0,0,0,0.5); }
+.dialog-close { width: auto; float: right; margin: 0; background: none; color: #333; font-size: 1.6em; }
+.dialog-close:hover { background: none; color: #1e89e0; }
+.file-name { text-align: center; font-size: 0.85em; color: #444; }
+footer { text-align: center; padding: 15px; color: #666; }
